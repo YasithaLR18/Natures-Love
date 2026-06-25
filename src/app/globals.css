@@ -142,6 +142,12 @@ html {
   transform: rotate(-45deg);
 }
 
+@media (min-width: 768px) {
+  .mobile-menu-button {
+    display: none;
+  }
+}
+
 .mobile-nav-panel {
   display: grid;
   grid-template-rows: 0fr;
@@ -632,6 +638,42 @@ html {
 
   .apple-carousel-dot--active {
     min-width: 2.35rem;
+  }
+
+  .ingredient-float {
+    z-index: 24;
+    padding: .52rem .78rem;
+    font-size: .58rem;
+    letter-spacing: .14em;
+    opacity: .94;
+    animation: none;
+  }
+
+  .ingredient-float:not(.ingredient-float--delay):not(.ingredient-float--slow) {
+    left: 2% !important;
+    top: 91% !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin-top: 30px;
+  }
+
+  .ingredient-float--delay {
+    left: auto !important;
+    right: 2% !important;
+    top: 91% !important;
+    bottom: auto !important;
+    display: block;
+    margin-top: 30px;
+  }
+
+  .ingredient-float--slow {
+    left: 50% !important;
+    right: auto !important;
+    top: calc(3% - 55px) !important;
+    bottom: auto !important;
+    display: block;
+    transform: translateX(-50%);
+    margin-top: 0;
   }
 }
 
