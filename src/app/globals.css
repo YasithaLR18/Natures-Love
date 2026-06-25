@@ -79,6 +79,16 @@ html {
   transform: translateY(-1px);
 }
 
+.desktop-account-link {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktop-account-link {
+    display: grid;
+  }
+}
+
 .apple-menu-button {
   position: relative;
   display: grid;

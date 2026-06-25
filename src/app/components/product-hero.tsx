@@ -150,6 +150,24 @@ export function ProductHero() {
     }
   }, [searchOpen]);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      return;
+    }
+
+    const closeMenuOnScroll = () => setMobileMenuOpen(false);
+
+    window.addEventListener("scroll", closeMenuOnScroll, { passive: true });
+    window.addEventListener("wheel", closeMenuOnScroll, { passive: true });
+    window.addEventListener("touchmove", closeMenuOnScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", closeMenuOnScroll);
+      window.removeEventListener("wheel", closeMenuOnScroll);
+      window.removeEventListener("touchmove", closeMenuOnScroll);
+    };
+  }, [mobileMenuOpen]);
+
   const heroStyle = useMemo(
     () =>
       ({
@@ -250,7 +268,7 @@ export function ProductHero() {
 
           <a
             aria-label="Account"
-            className="glass-icon-link"
+            className="glass-icon-link desktop-account-link"
             href="#account"
             title="Account"
           >
@@ -273,7 +291,7 @@ export function ProductHero() {
             aria-controls="mobile-navigation"
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            className={`apple-menu-button md:hidden ${mobileMenuOpen ? "apple-menu-button--open" : ""}`}
+            className={`apple-menu-button mobile-menu-button ${mobileMenuOpen ? "apple-menu-button--open" : ""}`}
             onClick={() => {
               setSearchOpen(false);
               setMobileMenuOpen((open) => !open);
@@ -307,20 +325,7 @@ export function ProductHero() {
               href="#account"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span>Account</span>
-              <svg
-                aria-hidden="true"
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path d="M20 21a8 8 0 0 0-16 0" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
+              Account
             </a>
           </nav>
         </div>
