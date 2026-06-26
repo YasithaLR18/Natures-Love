@@ -61,7 +61,35 @@ const primaryNav = [
   { label: "Home", href: "#" },
   { label: "About Us", href: "#about" },
   { label: "Blog", href: "#blog" },
-  { label: "Contact Us", href: "mailto:hello@natureslove.example" },
+  { label: "Shop Now", href: "#products" },
+];
+
+const categoryLinks = [
+  {
+    label: "Nuts",
+    href: "https://natureslove.lk/product-category/nuts/",
+    icon: "/img/categories/nuts.png",
+  },
+  {
+    label: "Seeds",
+    href: "https://natureslove.lk/product-category/seeds/",
+    icon: "/img/categories/seeds.png",
+  },
+  {
+    label: "Dried Fruits",
+    href: "https://natureslove.lk/product-category/dried-fruits/",
+    icon: "/img/categories/dried-fruits.png",
+  },
+  {
+    label: "Confectionery",
+    href: "https://natureslove.lk/product-category/confectionery/",
+    icon: "/img/categories/confectionery.png",
+  },
+  {
+    label: "Natural Fiber",
+    href: "https://natureslove.lk/product-category/natural-fiber/",
+    icon: "/img/categories/natural-fiber.png",
+  },
 ];
 
 const orbitSlots = [
@@ -179,14 +207,6 @@ export function ProductHero() {
     [activeProduct, ink],
   );
 
-  const nextProduct = () => {
-    setActiveIndex((current) => (current + 1) % products.length);
-  };
-
-  const previousProduct = () => {
-    setActiveIndex((current) => (current - 1 + products.length) % products.length);
-  };
-
   const selectProduct = (index: number) => {
     if (index !== activeIndex) {
       setActiveIndex(index);
@@ -198,7 +218,7 @@ export function ProductHero() {
       className="min-h-screen overflow-hidden text-[var(--hero-ink)] transition-colors duration-700"
       style={heroStyle}
     >
-      <section className="relative flex min-h-screen flex-col bg-[radial-gradient(circle_at_78%_16%,var(--hero-accent)_0,transparent_28%),radial-gradient(circle_at_14%_76%,rgba(255,255,255,.36)_0,transparent_26%),linear-gradient(135deg,var(--hero-theme)_0%,color-mix(in_srgb,var(--hero-theme)_78%,#25150a)_100%)] px-3 py-4 sm:px-8 sm:py-5 lg:px-12">
+      <section className="relative flex min-h-screen flex-col bg-[radial-gradient(circle_at_78%_16%,var(--hero-accent)_0,transparent_28%),radial-gradient(circle_at_14%_76%,rgba(255,255,255,.36)_0,transparent_26%),linear-gradient(135deg,var(--hero-theme)_0%,color-mix(in_srgb,var(--hero-theme)_78%,#25150a)_100%)] px-3 py-4 sm:px-8 sm:py-5 lg:px-12 lg:pt-0">
         <div className="hero-grain" />
         <header className="glass-navbar relative z-40 mx-auto flex w-full max-w-7xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3">
           <a
@@ -330,9 +350,9 @@ export function ProductHero() {
           </nav>
         </div>
 
-        <div className="relative z-10 mx-auto grid w-full max-w-7xl flex-1 items-center gap-5 py-5 lg:grid-cols-[minmax(0,.78fr)_minmax(0,1.22fr)] lg:gap-12 lg:py-4">
+        <div className="relative z-10 mx-auto grid w-full max-w-7xl flex-1 items-center gap-5 py-5 lg:-mt-[60px] lg:grid-cols-[minmax(0,.78fr)_minmax(0,1.22fr)] lg:gap-12 lg:py-4">
           <div className="relative z-30 order-3 max-w-[30rem] self-start lg:order-1 lg:mt-[55px]">
-            <h1 className="brand-title hero-brand-title text-5xl leading-[0.86] sm:text-6xl lg:text-[5.6rem]">
+            <h1 className="brand-title hero-brand-title hidden text-5xl leading-[0.86] sm:text-6xl lg:block lg:text-left lg:text-[5.6rem]">
               Nature&apos;s
               <br />
               Love
@@ -345,17 +365,52 @@ export function ProductHero() {
                 {activeProduct.subtitle}
               </p>
               <h2 className="detail-flow-item detail-flow-item--2 product-info-name">
-                {activeProduct.name}
+                {activeProduct.name === "Dried Blueberries" ? (
+                  <>
+                    Dried
+                    <br />
+                    Blueberries
+                  </>
+                ) : (
+                  activeProduct.name
+                )}
               </h2>
               <p className="detail-flow-item detail-flow-item--3 product-info-description">
                 {activeProduct.description}
               </p>
             </div>
+            <div className="category-quick-links" aria-label="Product categories">
+              {categoryLinks.map((category) => (
+                <a
+                  aria-label={category.label}
+                  className="category-quick-link"
+                  href={category.href}
+                  key={category.label}
+                  rel="noreferrer"
+                  target="_blank"
+                  title={category.label}
+                >
+                  <Image
+                    alt=""
+                    aria-hidden="true"
+                    className="h-7 w-7 object-contain"
+                    height={48}
+                    src={category.icon}
+                    width={48}
+                  />
+                </a>
+              ))}
+            </div>
           </div>
 
-          <div className="relative order-1 min-h-[390px] sm:min-h-[520px] lg:order-2 lg:min-h-[680px] lg:translate-x-8 xl:translate-x-12">
-            <div className="product-stage absolute left-1/2 top-1/2 z-10 h-[min(82vw,660px)] w-[min(92vw,720px)] -translate-x-1/2 -translate-y-1/2">
-              <p className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center text-6xl font-black uppercase leading-none tracking-normal text-white/20 sm:text-8xl lg:text-[9rem]">
+          <div className="relative order-1 min-h-[350px] sm:min-h-[470px] lg:order-2 lg:min-h-[600px] lg:-translate-y-[30px] lg:translate-x-8 xl:translate-x-12">
+            <div className="product-stage absolute left-1/2 top-1/2 z-10 h-[min(74vw,590px)] w-[min(84vw,640px)] -translate-x-1/2 -translate-y-1/2">
+              <p className="brand-title mobile-carousel-brand md:hidden">
+                Nature&apos;s
+                <br />
+                Love
+              </p>
+              <p className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center text-6xl font-black uppercase leading-none tracking-normal text-white/20 md:block sm:text-8xl lg:text-[9rem]">
                 Snacks
               </p>
               <div className="product-orbit-ring" />
@@ -400,63 +455,6 @@ export function ProductHero() {
                   </button>
                 );
               })}
-            </div>
-          </div>
-
-          <div className="relative z-30 order-2 mx-auto hidden w-full max-w-7xl justify-center md:flex lg:order-3 lg:col-span-2">
-            <div className="apple-carousel-controls">
-              <button
-                aria-label="Previous product"
-                className="apple-carousel-arrow"
-                onClick={previousProduct}
-                type="button"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="3"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="m15 18-6-6 6-6" />
-                </svg>
-              </button>
-              <div className="apple-carousel-dots">
-                {products.map((product, index) => (
-                  <button
-                    aria-current={index === activeIndex ? "true" : undefined}
-                    aria-label={`Go to ${product.name}`}
-                    className={`apple-carousel-dot ${index === activeIndex ? "apple-carousel-dot--active" : ""}`}
-                    key={product.name}
-                    onClick={() => selectProduct(index)}
-                    type="button"
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </button>
-                ))}
-              </div>
-              <button
-                aria-label="Next product"
-                className="apple-carousel-arrow"
-                onClick={nextProduct}
-                type="button"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="3"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="m9 18 6-6-6-6" />
-                </svg>
-              </button>
             </div>
           </div>
         </div>
