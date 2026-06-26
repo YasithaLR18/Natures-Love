@@ -1,6 +1,21 @@
 import Image from "next/image";
 
-const trustItems = ["Fast Shipping", "100% Safest Payments", "24/7 Customer Support"];
+import { StoryTypewriter } from "./story-typewriter";
+
+const trustItems = [
+  {
+    title: "Fast Shipping",
+    image: "/img/about-us/fast-delivery.jpg",
+  },
+  {
+    title: "100% Safest Payments",
+    image: "/img/about-us/safe-payments.jpg",
+  },
+  {
+    title: "24/7 Customer Support",
+    image: "/img/about-us/customer-support.jpg",
+  },
+];
 
 const values = [
   ["Purity", "No artificial additives, no shortcuts."],
@@ -24,6 +39,12 @@ const socialLinks = [
   ["Tiktok", "https://www.tiktok.com/@natureslove.lk"],
 ];
 
+const storyParagraphs = [
+  "Nature's Love began in 2018 with a simple, heartfelt dream - to reconnect people with the purity of nature. From the very beginning, our dear friend, Sethum Products, has inspired and guided our journey. Together, we share values, support farming communities, and walk hand-in-hand on a mission to promote healthier, more natural living.",
+  "This friendship with Sethum Products has taught us that food is far more than taste - it is responsibility, honesty, care, and love. Every nut, seed, and dried fruit we bring to you carries the story of dedicated farmers, nurturing land, and human connection.",
+  "For us, Nature's Love is not just a business - it is a promise to nourish your family with food that loves you back, made with care, heart, and deep respect for nature and community.",
+];
+
 export function AboutUs() {
   return (
     <section className="about-section" id="about">
@@ -43,9 +64,6 @@ export function AboutUs() {
               nutrition. With GMP, HACCP, and ISO 22000 certifications, we guarantee safety,
               quality, and excellence in every pack.
             </p>
-            <a className="about-shop-link" href="https://natureslove.lk/shop/">
-              Go To Shop
-            </a>
           </div>
 
           <div className="about-visual" aria-label="Nature's Love products">
@@ -75,39 +93,33 @@ export function AboutUs() {
         </div>
 
         <div className="about-trust" aria-label="Service promises">
-          <p>Grow your amazing business</p>
-          <div>
+          <div className="about-trust-heading">
+            <span />
+            <h2>Grow Your Amazing Business</h2>
+            <span />
+          </div>
+          <div className="about-trust-cards">
             {trustItems.map((item) => (
-              <span key={item}>{item}</span>
+              <article className="about-trust-card" key={item.title}>
+                <div className="about-trust-image">
+                  <Image alt="" aria-hidden="true" fill sizes="(min-width: 900px) 28vw, 90vw" src={item.image} />
+                </div>
+                <h3>{item.title}</h3>
+              </article>
             ))}
           </div>
         </div>
 
         <div className="about-story">
-          <div>
+          <div className="about-story-heading">
             <p className="about-kicker">Since 2018</p>
-            <h2>A Journey Inspired by Friendship & Purpose</h2>
+            <h2>
+              <span>A Journey</span>
+              <span>Inspired by Friendship</span>
+              <span>&amp; Purpose</span>
+            </h2>
           </div>
-          <div className="about-story-copy">
-            <p>
-              Nature&apos;s Love began in 2018 with a simple, heartfelt dream - to reconnect
-              people with the purity of nature. From the very beginning, our dear friend,
-              Sethum Products, has inspired and guided our journey. Together, we share
-              values, support farming communities, and walk hand-in-hand on a mission to
-              promote healthier, more natural living.
-            </p>
-            <p>
-              This friendship with Sethum Products has taught us that food is far more than
-              taste - it is responsibility, honesty, care, and love. Every nut, seed, and
-              dried fruit we bring to you carries the story of dedicated farmers, nurturing
-              land, and human connection.
-            </p>
-            <p>
-              For us, Nature&apos;s Love is not just a business - it is a promise to nourish your
-              family with food that loves you back, made with care, heart, and deep respect
-              for nature and community.
-            </p>
-          </div>
+          <StoryTypewriter paragraphs={storyParagraphs} />
         </div>
 
         <div className="about-mvv">
