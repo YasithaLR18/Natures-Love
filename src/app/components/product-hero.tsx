@@ -149,6 +149,8 @@ export function ProductHero() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const heroNavRef = useRef<HTMLElement>(null);
+  const mobileNavPanelRef = useRef<HTMLDivElement>(null);
   const desktopSearchInputRef = useRef<HTMLInputElement>(null);
   const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const activeProduct = products[activeIndex];
@@ -203,13 +205,29 @@ export function ProductHero() {
       return;
     }
 
+    const closeMenuOnOutsidePointer = (event: PointerEvent) => {
+      const target = event.target;
+
+      if (!(target instanceof Node)) {
+        return;
+      }
+
+      if (heroNavRef.current?.contains(target) || mobileNavPanelRef.current?.contains(target)) {
+        return;
+      }
+
+      setMobileMenuOpen(false);
+    };
+
     const closeMenuOnScroll = () => setMobileMenuOpen(false);
 
+    document.addEventListener("pointerdown", closeMenuOnOutsidePointer);
     window.addEventListener("scroll", closeMenuOnScroll, { passive: true });
     window.addEventListener("wheel", closeMenuOnScroll, { passive: true });
     window.addEventListener("touchmove", closeMenuOnScroll, { passive: true });
 
     return () => {
+      document.removeEventListener("pointerdown", closeMenuOnOutsidePointer);
       window.removeEventListener("scroll", closeMenuOnScroll);
       window.removeEventListener("wheel", closeMenuOnScroll);
       window.removeEventListener("touchmove", closeMenuOnScroll);
@@ -240,7 +258,10 @@ export function ProductHero() {
     >
       <section className="product-hero-section relative flex min-h-screen flex-col bg-[radial-gradient(circle_at_78%_16%,var(--hero-accent)_0,transparent_28%),radial-gradient(circle_at_14%_76%,rgba(255,255,255,.36)_0,transparent_26%),linear-gradient(135deg,var(--hero-theme)_0%,color-mix(in_srgb,var(--hero-theme)_78%,#25150a)_100%)] px-3 py-4 sm:px-8 sm:py-5 lg:px-12 lg:pt-0">
         <div className="hero-grain" />
-        <header className="glass-navbar hero-nav-shell relative z-40 mx-auto flex w-full max-w-7xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3">
+        <header
+          className="glass-navbar hero-nav-shell relative z-40 mx-auto flex w-full max-w-7xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3"
+          ref={heroNavRef}
+        >
           <a
             aria-label="NaturesLove home"
             className="flex shrink-0 items-center"
@@ -407,6 +428,7 @@ export function ProductHero() {
             mobileMenuOpen ? "mobile-nav-panel--open" : ""
           }`}
           id="mobile-navigation"
+          ref={mobileNavPanelRef}
         >
           <nav className="mobile-nav-panel__inner" aria-label="Mobile navigation">
             {primaryNav.map((item) => (
