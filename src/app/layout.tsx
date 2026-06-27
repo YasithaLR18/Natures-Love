@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Alegreya, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -24,6 +24,12 @@ export const metadata: Metadata = {
   title: "NaturesLove | Premium Dried Fruits and Seeds",
   description:
     "A colorful rotating showcase for Nature's Love dried fruits, seeds, and natural snack products.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

@@ -149,7 +149,8 @@ export function ProductHero() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  const desktopSearchInputRef = useRef<HTMLInputElement>(null);
+  const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const activeProduct = products[activeIndex];
   const ink = readableInk(activeProduct.themeColor);
 
@@ -190,7 +191,10 @@ export function ProductHero() {
 
   useEffect(() => {
     if (searchOpen) {
-      searchInputRef.current?.focus();
+      const isMobile = window.matchMedia("(max-width: 767px)").matches;
+      const input = isMobile ? mobileSearchInputRef.current : desktopSearchInputRef.current;
+
+      input?.focus();
     }
   }, [searchOpen]);
 
@@ -231,12 +235,12 @@ export function ProductHero() {
 
   return (
     <main
-      className="min-h-screen overflow-hidden text-[var(--hero-ink)] transition-colors duration-700"
+      className="product-hero-root min-h-screen overflow-hidden text-[var(--hero-ink)] transition-colors duration-700"
       style={heroStyle}
     >
-      <section className="relative flex min-h-screen flex-col bg-[radial-gradient(circle_at_78%_16%,var(--hero-accent)_0,transparent_28%),radial-gradient(circle_at_14%_76%,rgba(255,255,255,.36)_0,transparent_26%),linear-gradient(135deg,var(--hero-theme)_0%,color-mix(in_srgb,var(--hero-theme)_78%,#25150a)_100%)] px-3 py-4 sm:px-8 sm:py-5 lg:px-12 lg:pt-0">
+      <section className="product-hero-section relative flex min-h-screen flex-col bg-[radial-gradient(circle_at_78%_16%,var(--hero-accent)_0,transparent_28%),radial-gradient(circle_at_14%_76%,rgba(255,255,255,.36)_0,transparent_26%),linear-gradient(135deg,var(--hero-theme)_0%,color-mix(in_srgb,var(--hero-theme)_78%,#25150a)_100%)] px-3 py-4 sm:px-8 sm:py-5 lg:px-12 lg:pt-0">
         <div className="hero-grain" />
-        <header className="glass-navbar relative z-40 mx-auto flex w-full max-w-7xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3">
+        <header className="glass-navbar hero-nav-shell relative z-40 mx-auto flex w-full max-w-7xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-4 sm:py-3">
           <a
             aria-label="NaturesLove home"
             className="flex shrink-0 items-center"
@@ -253,7 +257,7 @@ export function ProductHero() {
           </a>
 
           <form
-            className={`glass-expand-search ml-auto md:ml-0 ${searchOpen ? "glass-expand-search--open" : ""}`}
+            className={`glass-expand-search desktop-search-control ml-auto md:ml-0 ${searchOpen ? "glass-expand-search--open" : ""}`}
             onSubmit={(event) => event.preventDefault()}
             role="search"
           >
@@ -263,7 +267,7 @@ export function ProductHero() {
               onClick={() => {
                 setMobileMenuOpen(false);
                 setSearchOpen(true);
-                window.setTimeout(() => searchInputRef.current?.focus(), 0);
+                window.setTimeout(() => desktopSearchInputRef.current?.focus(), 0);
               }}
               type="button"
             >
@@ -281,15 +285,15 @@ export function ProductHero() {
                 <path d="m21 21-4.3-4.3" />
               </svg>
             </button>
-            <label className="sr-only" htmlFor="site-search">
+            <label className="sr-only" htmlFor="site-search-desktop">
               Search products
             </label>
             <input
               className="glass-search-input"
-              id="site-search"
+              id="site-search-desktop"
               onBlur={() => setSearchOpen(false)}
               placeholder="Search..."
-              ref={searchInputRef}
+              ref={desktopSearchInputRef}
               type="search"
             />
           </form>
@@ -339,6 +343,65 @@ export function ProductHero() {
           </button>
         </header>
 
+        <div className="mobile-viewport-controls md:hidden">
+          <form
+            className={`glass-expand-search ${searchOpen ? "glass-expand-search--open" : ""}`}
+            onSubmit={(event) => event.preventDefault()}
+            role="search"
+          >
+            <button
+              aria-label={searchOpen ? "Focus search" : "Open search"}
+              className="grid h-9 w-9 shrink-0 place-items-center"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setSearchOpen(true);
+                window.setTimeout(() => mobileSearchInputRef.current?.focus(), 0);
+              }}
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+            </button>
+            <label className="sr-only" htmlFor="site-search-mobile">
+              Search products
+            </label>
+            <input
+              className="glass-search-input"
+              id="site-search-mobile"
+              onBlur={() => setSearchOpen(false)}
+              placeholder="Search..."
+              ref={mobileSearchInputRef}
+              type="search"
+            />
+          </form>
+
+          <button
+            aria-controls="mobile-navigation"
+            aria-expanded={mobileMenuOpen}
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            className={`apple-menu-button ${mobileMenuOpen ? "apple-menu-button--open" : ""}`}
+            onClick={() => {
+              setSearchOpen(false);
+              setMobileMenuOpen((open) => !open);
+            }}
+            type="button"
+          >
+            <span />
+            <span />
+          </button>
+        </div>
+
         <div
           className={`mobile-nav-panel relative z-30 mx-auto w-full max-w-7xl md:hidden ${
             mobileMenuOpen ? "mobile-nav-panel--open" : ""
@@ -366,8 +429,8 @@ export function ProductHero() {
           </nav>
         </div>
 
-        <div className="relative z-10 mx-auto grid w-full max-w-7xl flex-1 items-center gap-5 py-5 lg:-mt-[60px] lg:grid-cols-[minmax(0,.78fr)_minmax(0,1.22fr)] lg:gap-12 lg:py-4">
-          <div className="relative z-30 order-3 max-w-[30rem] self-start lg:order-1 lg:mt-[55px]">
+        <div className="hero-layout relative z-10 mx-auto grid w-full max-w-7xl flex-1 items-center gap-5 py-5 lg:-mt-[60px] lg:grid-cols-[minmax(0,.78fr)_minmax(0,1.22fr)] lg:gap-12 lg:py-4">
+          <div className="hero-copy-column relative z-30 order-3 max-w-[30rem] self-start lg:order-1 lg:mt-[55px]">
             <h1 className="brand-title hero-brand-title hidden text-5xl leading-[0.86] sm:text-6xl lg:block lg:text-left lg:text-[5.6rem]">
               Nature&apos;s
               <br />
@@ -419,7 +482,7 @@ export function ProductHero() {
             </div>
           </div>
 
-          <div className="relative order-1 min-h-[350px] sm:min-h-[470px] lg:order-2 lg:min-h-[600px] lg:-translate-y-[30px] lg:translate-x-8 xl:translate-x-12">
+          <div className="hero-stage-column relative order-1 min-h-[350px] sm:min-h-[470px] lg:order-2 lg:min-h-[600px] lg:-translate-y-[30px] lg:translate-x-8 xl:translate-x-12">
             <div className="product-stage absolute left-1/2 top-1/2 z-10 h-[min(74vw,590px)] w-[min(84vw,640px)] -translate-x-1/2 -translate-y-1/2">
               <p className="brand-title mobile-carousel-brand md:hidden">
                 Nature&apos;s
